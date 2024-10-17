@@ -3,4 +3,4 @@ project(spo C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(spo main.c)
+add_executable(spo tee.c)
