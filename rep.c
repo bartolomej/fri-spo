@@ -29,22 +29,29 @@ int main(const int argc, char* argv[]) {
     }
 
     FILE *input_file = fopen(input_file_path, "r");
-    int input_file_fd = fileno(input_file);
-    int offset_from_end = -1;
+    const int input_file_fd = fileno(input_file);
+    off_t offset_from_end = -1;
     lseek(input_file_fd, offset_from_end, SEEK_END);
 
     int seen_newlines = 0;
-    while (seen_newlines < lines_to_read) {
+    while (1) {
         char input;
         const ssize_t bytes_read = read(input_file_fd, &input, 1);
         if (bytes_read == -1) {
             printf("Error reading bytes from input file\n");
             exit(1);
         }
-        if (input == '\n') {
+        if (bytes_read == 0) {
+            break;
+        }
+        // Ignore newline if it's the very last character of the file
+        if (input == '\n' && offset_from_end != -1) {
             seen_newlines++;
         }
-        offset_from_end -= 2;
+        if (seen_newlines == lines_to_read) {
+            break;
+        }
+        offset_from_end -= 1;
         lseek(input_file_fd, offset_from_end, SEEK_END);
     }
 
@@ -53,6 +60,8 @@ int main(const int argc, char* argv[]) {
     read(input_file_fd, output_buffer, output_buffer_size);
     write(STDOUT_FILENO, output_buffer, output_buffer_size);
     free(output_buffer);
+
+    fclose(input_file);
 }
 
 void print_usage() {
