@@ -23,7 +23,13 @@ int main(const int argc, char* argv[]) {
         exit(1);
     }
 
-    FILE* output_file = fopen(output_file_path, "w");
+    char *mode;
+    if (append) {
+        mode = "a";
+    } else {
+        mode = "w";
+    }
+    FILE* output_file = fopen(output_file_path, mode);
     if (output_file == NULL) {
         printf("Error opening output file: %s\n", output_file_path);
         exit(1);
@@ -34,9 +40,6 @@ int main(const int argc, char* argv[]) {
     ssize_t n_bytes_read = 0;
     while ((n_bytes_read = read(STDIN_FILENO, input_buffer, input_buffer_size)) > 0) {
         fwrite(input_buffer, 1, n_bytes_read, output_file);
-
-        // TODO: Remove this
-        fflush(output_file);
     }
 
     fclose(output_file);
