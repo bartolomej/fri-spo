@@ -31,7 +31,7 @@ int main(const int argc, char* argv[]) {
     FILE *input_file = fopen(input_file_path, "r");
     const int input_file_fd = fileno(input_file);
     off_t offset_from_end = -1;
-    lseek(input_file_fd, offset_from_end, SEEK_END);
+    off_t offset_from_start = lseek(input_file_fd, offset_from_end, SEEK_END);
 
     int seen_newlines = 0;
     while (1) {
@@ -41,9 +41,6 @@ int main(const int argc, char* argv[]) {
             printf("Error reading bytes from input file\n");
             exit(1);
         }
-        if (bytes_read == 0) {
-            break;
-        }
         // Ignore newline if it's the very last character of the file
         if (input == '\n' && offset_from_end != -1) {
             seen_newlines++;
@@ -52,7 +49,12 @@ int main(const int argc, char* argv[]) {
             break;
         }
         offset_from_end -= 1;
-        lseek(input_file_fd, offset_from_end, SEEK_END);
+        offset_from_start = lseek(input_file_fd, offset_from_end, SEEK_END);
+        if (offset_from_start == 0) {
+            // We haven't seen the specified number of newlines,
+            // but are already at the beginning of the file.
+            break;
+        }
     }
 
     const unsigned long output_buffer_size = (-offset_from_end) * sizeof(char);
