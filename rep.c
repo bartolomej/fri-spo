@@ -7,7 +7,7 @@ void print_usage();
 
 int main(const int argc, char* argv[]) {
     int lines_to_read = 5;
-    char *input_file_path = NULL;
+    const char *input_file_path = NULL;
     if (argc == 4) {
         if (strcmp(argv[1], "-n") == 0) {
             lines_to_read = atoi(argv[2]);
@@ -21,10 +21,6 @@ int main(const int argc, char* argv[]) {
         input_file_path = argv[1];
     } else {
         print_usage();
-    }
-
-    if (input_file_path == NULL) {
-        printf("Unreachable");
         exit(1);
     }
 
