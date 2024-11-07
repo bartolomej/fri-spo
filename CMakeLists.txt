@@ -6,4 +6,5 @@ set(CMAKE_C_STANDARD 11)
 add_executable(spo tee1.c
         rep.c
         lsl.c
-        mojChmod.c)
+        mojChmod.c
+        buf_write_benchmark.c)
