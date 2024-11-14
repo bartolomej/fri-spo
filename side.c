@@ -5,16 +5,16 @@
 
 void append_stdin(FILE *file);
 
-void delete_line(FILE *in_file, const char *in_file_name, const int delete_line_num);
+void delete_line(FILE *in_file, const char *in_file_name, int delete_line_num);
 
-void insert_line(FILE *in_file, const char *in_file_name, const int insert_at_line_num);
+void insert_line(FILE *in_file, const char *in_file_name, int insert_at_line_num);
 
 int main(const int argc, char *argv[]) {
     if (argc < 3) {
         fprintf(stderr, "Usage:\n");
-        fprintf(stderr, "  ./kamned <filename> -a\n");
-        fprintf(stderr, "  ./kamned <filename> -d n\n");
-        fprintf(stderr, "  ./kamned <filename> -i n\n");
+        fprintf(stderr, "  ./side <filename> -a\n");
+        fprintf(stderr, "  ./side <filename> -d n\n");
+        fprintf(stderr, "  ./side <filename> -i n\n");
         exit(EXIT_FAILURE);
     }
 

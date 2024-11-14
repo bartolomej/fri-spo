@@ -7,7 +7,7 @@ long int set_perm(const char* perm_str, long int perm);
 
 int main(const int argc, char* argv[]) {
     if (argc != 3) {
-        printf("Usage: mojChmod <perm> <pathname>\n");
+        printf("Usage: ./schmod <perm> <pathname>\n");
         return 1;
     }
     const char* perm_str = argv[1];

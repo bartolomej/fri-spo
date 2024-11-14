@@ -1,5 +1,9 @@
 # System Programming in C
 
 System utility programs:
-- `rep.c` - simplified tail
-- `tee1.c` - simplified tee
+- `stail.c` - simple tail
+- `stee.c` - simple tee
+- `schmod.c` - simple chmod
+- `sls.c` - simple ls
+- `side.c` - simple IDE
+- `sterm.c` - simple terminal
