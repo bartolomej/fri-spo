@@ -5,7 +5,7 @@
 #include <sys/wait.h>
 
 void parse(char *input, char* args[]);
-void parse_with_strtok(char *input, char *args[]);
+void parse_with_strtok(char *input, char *args[], int args_size);
 void exec_cmd(char *args[]);
 void sig_handler(int signo);
 void print_line_cursor();
@@ -34,11 +34,12 @@ int main() {
         // Remove the newline character
         input[strcspn(input, "\n")] = '\0';
 
-        char *args[64];
+        int args_size = 64;
+        char *args[args_size];
         if (line_counter % 2 == 1) {
             parse(input, args);
         } else {
-            parse_with_strtok(input, args);
+            parse_with_strtok(input, args, args_size);
         }
 
         if (args[0] == NULL || strlen(args[0]) == 0) {
@@ -94,6 +95,7 @@ void parse(char *input, char* args[]) {
     const char replacer = '\0';
     char *current = input;
 
+    // Remove delim padding from the start
     while (*current == delim) {
         current++;
     }
@@ -101,7 +103,7 @@ void parse(char *input, char* args[]) {
     int args_index = 0;
     args[args_index++] = current;
 
-
+    // Split the rest of the input string into an array of strings
     while (true) {
         if (*current == '\0') {
             break;
@@ -115,12 +117,18 @@ void parse(char *input, char* args[]) {
         }
         current++;
     }
+
+    args[args_index] = NULL;
 }
 
-void parse_with_strtok(char *input, char *args[]) {
+// https://cplusplus.com/reference/cstring/strtok
+// for thread-safe parsing, consider these alternatives to strtok:
+// - https://linux.die.net/man/3/strtok_r
+// - https://en.cppreference.com/w/c/string/byte/strtok
+void parse_with_strtok(char *input, char *args[], int args_size) {
     int args_index = 0;
     char *token = strtok(input, " ");
-    while (token != NULL && args_index < 64 - 1) {
+    while (token != NULL && args_index < args_size - 1) {
         args[args_index++] = token;
         token = strtok(NULL, " ");
     }
