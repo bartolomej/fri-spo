@@ -8,4 +8,5 @@ add_executable(spo tee1.c
         lsl.c
         mojChmod.c
         buf_write_benchmark.c
-        kamned.c)
+        kamned.c
+        terminal.c)
