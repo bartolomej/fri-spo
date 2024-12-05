@@ -10,4 +10,9 @@ add_executable(spo stee.c
         buf_write_benchmark.c
         side.c
         sterm.c
-        monte_carlo_integral.c)
+        monte_carlo_integral.c
+        ipc/producer.c
+        ipc/proxy.c
+        ipc/consumer.c
+        ipc/common.c
+)
