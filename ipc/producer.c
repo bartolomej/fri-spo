@@ -10,6 +10,7 @@
 #define N_MESSAGES 5
 
 int main() {
+    // Allocate shared memory segment
     const int shm_id = shmget(SHM_KEY, SHM_SIZE, IPC_CREAT | 0666);
     if (shm_id == -1) {
         perror("[producer] shmget failed");
@@ -22,18 +23,20 @@ int main() {
         exit(1);
     }
 
+    // Create a semaphore
     const int sem_id = semget(SEM_KEY, 1, IPC_CREAT | 0666);
     if (sem_id == -1) {
         perror("[producer] semget");
         exit(1);
     }
+    // Initialize the semaphore (1 because there is only 1 producer)
     semctl(sem_id, 0, SETVAL, 1);
 
     for (int i = 1; i <= N_MESSAGES; i++) {
         sleep(2);
         sem_lock(sem_id);
 
-        printf("[producer]: sending '%s'\n", shm_addr);
+        printf("[producer]: produced message '%s'\n", shm_addr);
 
         if (i < N_MESSAGES) {
             snprintf(shm_addr, SHM_SIZE, "ID %d: To je sporocilo.", i);

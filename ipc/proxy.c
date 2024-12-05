@@ -42,15 +42,13 @@ int main() {
         sleep(1);
         sem_lock(sem_id);
 
-        printf("[proxy] message '%s'\n", shm_addr);
-
         if (strcmp(shm_addr, last_message) != 0) {
             struct message msg;
             msg.msg_type = 1;
             strncpy(msg.msg_text, shm_addr, SHM_SIZE);
 
             msgsnd(msg_id, &msg, sizeof(msg.msg_text), 0);
-            printf("[proxy] forwarded: '%s'\n", shm_addr);
+            printf("[proxy] forwarded message: '%s'\n", shm_addr);
 
             strcpy(last_message, shm_addr);
         }
@@ -58,7 +56,7 @@ int main() {
         sem_unlock(sem_id);
 
         if (shm_addr[0] == '\0') {
-            printf("[proxy] stopping\n");
+            printf("[proxy] received empty message, stopping\n");
             break;
         }
     }
