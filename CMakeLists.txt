@@ -9,4 +9,5 @@ add_executable(spo stee.c
         schmod.c
         buf_write_benchmark.c
         side.c
-        sterm.c)
+        sterm.c
+        monte_carlo_integral.c)
